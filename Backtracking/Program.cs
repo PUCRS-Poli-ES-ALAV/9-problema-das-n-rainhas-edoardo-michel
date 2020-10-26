@@ -1,90 +1,89 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Backtracking
 {
     internal class Program
     {
-        private static int n;
-        private static int k = 1;
+        private static int _n;
+        private static int _k = 1;
 
         private static void Main(string[] args)
         {
-            NQueens(6);
+            NRainhas(6);
         }
 
-        private static void NQueens(int size)
+        private static void NRainhas(int tamanho)
         {
-            n = size;
-            var board = new int[n, n];
+            _n = tamanho;
+            var tabuleiro = new int[_n, _n];
 
-            if (NQueensUtil(board, 0) == false)
+            if (NRainhasUtil(tabuleiro, 0) == false)
             {
-                Console.Write("Solution does not exist");
+                Console.Write("Sem solução");
             }
         }
 
-        private static bool NQueensUtil(int[,] board, int col)
+        private static bool NRainhasUtil(int[,] tabuleiro, int coluna)
         {
-            if (col == n)
+            if (coluna == _n)
             {
-                PrintSolution(board);
+                ToString(tabuleiro);
                 return true;
             }
 
             bool res = false;
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < _n; i++)
             {
-                if (IsSafe(board, i, col))
+                if (IsSafe(tabuleiro, i, coluna))
                 {
-                    board[i, col] = 1;
+                    tabuleiro[i, coluna] = 1;
 
-                    res = NQueensUtil(board, col + 1) || res;
+                    res = NRainhasUtil(tabuleiro, coluna + 1) || res;
 
-                    board[i, col] = 0; // BACKTRACK 
+                    tabuleiro[i, coluna] = 0;
                 }
             }
 
             return res;
         }
 
-        private static void PrintSolution(int[,] board)
+        private static void ToString(int[,] tabuleiro)
         {
-            Console.Write($"{k++}-\n");
-            for (int i = 0; i < n; i++)
+            Console.Write($"{_k++}-\n");
+            for (int i = 0; i < _n; i++)
             {
-                for (int j = 0; j < n; j++)
+                for (int j = 0; j < _n; j++)
                 {
-                    Console.Write($" {board[i, j]} ");
+                    Console.Write($" {tabuleiro[i, j]} ");
                 }
 
                 Console.Write("\n");
             }
         }
 
-        private static bool IsSafe(int[,] board, int row, int col)
+        private static bool IsSafe(int[,] tabuleiro, int linha, int coluna)
         {
             int i, j;
 
-            for (i = 0; i < col; i++)
+            for (i = 0; i < coluna; i++)
             {
-                if (board[row, i] == 1)
+                if (tabuleiro[linha, i] == 1)
                 {
                     return false;
                 }
             }
 
-            for (i = row, j = col; i >= 0 && j >= 0; i--, j--)
+            for (i = linha, j = coluna; i >= 0 && j >= 0; i--, j--)
             {
-                if (board[i, j] == 1)
+                if (tabuleiro[i, j] == 1)
                 {
                     return false;
                 }
             }
 
-            for (i = row, j = col; j >= 0 && i < n; i++, j--)
+            for (i = linha, j = coluna; j >= 0 && i < _n; i++, j--)
             {
-                if (board[i, j] == 1)
+                if (tabuleiro[i, j] == 1)
                 {
                     return false;
                 }
